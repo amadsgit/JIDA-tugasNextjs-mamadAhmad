@@ -75,13 +75,13 @@ export default function CakupanImunisasiChart({ data }: ImunisasiChartProps) {
       <div className="relative w-full" style={{ height: '400px' }}>
         <Bar data={chartData} options={options} />
       </div>
-      <p className="text-xs text-gray-500 text-center">
-        Sumber data:{' '}
+      <p className="text-sm text-red-500 text-center">
+        Sumber data API :{' '}
         <a
           href="https://opendata.cimahikota.go.id/"
           target="_blank"
           rel="noopener noreferrer"
-          className="underline hover:text-emerald-600"
+          className="underline hover:text-emerald-600 text-gray-500"
         >
           Open Data Kota Cimahi
         </a>
