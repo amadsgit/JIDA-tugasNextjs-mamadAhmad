@@ -5,20 +5,24 @@ type PageProps = {
   params: { id: string };
 };
 
-// Tambahkan ini agar Next.js tahu bahwa halaman ini bersifat dinamis
 export const dynamic = 'force-dynamic';
 
 export default async function Page({ params }: PageProps) {
   const { id } = params;
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+  if (!baseUrl) {
+    console.error('ERROR: NEXT_PUBLIC_BASE_URL tidak ditemukan di env.');
+    return notFound();
+  }
 
   try {
     const res = await fetch(`${baseUrl}/api/manajemen-posyandu`, {
       cache: 'no-store',
     });
 
-    if (!res.ok) throw new Error('Failed to fetch');
+    if (!res.ok) throw new Error(`Fetch gagal: ${res.statusText}`);
 
     const data = await res.json();
     const posyandu = data.find((item: any) => item.id.toString() === id);
