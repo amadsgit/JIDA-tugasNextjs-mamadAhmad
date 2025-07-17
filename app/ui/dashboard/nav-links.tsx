@@ -24,7 +24,7 @@ const flatMenu = [
 
   // Admin
   { name: 'Manajemen Posyandu', href: '/dashboard/manajemen-posyandu', icon: UserGroupIcon },
-  { name: 'Manajemen Akun', href: '/dashboard/akun', icon: UserIcon },
+  // { name: 'Manajemen Akun', href: '/dashboard/akun', icon: UserIcon },
   // { name: 'Statistik Posyandu', href: '/dashboard/statistik', icon: ChartBarIcon },
 
   // Kader / Nakes
