@@ -8,4 +8,3 @@ export async function getDataImunisasi(): Promise<DataImunisasi[]> {
   });
   return res.json();
 }
-
