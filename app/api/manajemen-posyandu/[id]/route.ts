@@ -1,14 +1,13 @@
-// app/api/manajemen-posyandu/[id]/route.ts
-
+// api/manajemen-posyandu/[id]/route.ts
 import { NextRequest } from 'next/server';
-import { posyanduList } from '../data';
+import { posyanduStore } from '../data';
 
 export const dynamic = 'force-dynamic';
 
 export async function PUT(request: NextRequest, context: { params?: { id?: string } }) {
-  const id = context.params?.id;
+  const id = Number(context.params?.id);
   if (!id) {
-    return new Response(JSON.stringify({ error: 'ID tidak ditemukan dalam parameter URL' }), { status: 400 });
+    return new Response(JSON.stringify({ error: 'ID tidak valid' }), { status: 400 });
   }
 
   try {
@@ -19,14 +18,13 @@ export async function PUT(request: NextRequest, context: { params?: { id?: strin
       return new Response(JSON.stringify({ error: 'Semua field wajib diisi!' }), { status: 400 });
     }
 
-    const index = posyanduList.findIndex(item => item.id.toString() === id);
-    if (index === -1) {
+    const updated = posyanduStore.update(id, { nama, alamat, wilayah, kelurahan });
+
+    if (!updated) {
       return new Response(JSON.stringify({ error: 'Data tidak ditemukan!' }), { status: 404 });
     }
 
-    posyanduList[index] = { ...posyanduList[index], nama, alamat, wilayah, kelurahan };
-    return new Response(JSON.stringify(posyanduList[index]), { status: 200 });
-
+    return new Response(JSON.stringify({ message: 'Data berhasil diupdate' }), { status: 200 });
   } catch (error) {
     console.error('Error updating data:', error);
     return new Response(JSON.stringify({ error: 'Gagal memproses permintaan' }), { status: 500 });
@@ -34,16 +32,16 @@ export async function PUT(request: NextRequest, context: { params?: { id?: strin
 }
 
 export async function DELETE(_: NextRequest, context: { params?: { id?: string } }) {
-  const id = context.params?.id;
+  const id = Number(context.params?.id);
   if (!id) {
-    return new Response(JSON.stringify({ error: 'ID tidak ditemukan dalam parameter URL' }), { status: 400 });
+    return new Response(JSON.stringify({ error: 'ID tidak valid' }), { status: 400 });
   }
 
-  const index = posyanduList.findIndex(item => item.id.toString() === id);
-  if (index === -1) {
+  const deleted = posyanduStore.delete(id);
+
+  if (!deleted) {
     return new Response(JSON.stringify({ error: 'Data tidak ditemukan!' }), { status: 404 });
   }
 
-  const deleted = posyanduList.splice(index, 1)[0];
-  return new Response(JSON.stringify({ message: 'Berhasil dihapus', deleted }), { status: 200 });
+  return new Response(JSON.stringify({ message: 'Data berhasil dihapus', deleted }), { status: 200 });
 }

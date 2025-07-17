@@ -1,7 +1,8 @@
-import { posyanduList } from './data';
+// api/manajemen-posyandu/route.ts
+import { posyanduStore } from './data';
 
-export async function GET(request: Request) {
-  return new Response(JSON.stringify(posyanduList), {
+export async function GET() {
+  return new Response(JSON.stringify(posyanduStore.getAll()), {
     status: 200,
     headers: { 'Content-Type': 'application/json' },
   });
@@ -18,7 +19,7 @@ export async function POST(request: Request) {
     });
   }
 
-  const newPosyandu = {
+  const newItem = {
     id: Date.now(),
     nama,
     alamat,
@@ -26,9 +27,9 @@ export async function POST(request: Request) {
     kelurahan,
   };
 
-  posyanduList.push(newPosyandu);
+  posyanduStore.add(newItem);
 
-  return new Response(JSON.stringify(newPosyandu), {
+  return new Response(JSON.stringify(newItem), {
     status: 201,
     headers: { 'Content-Type': 'application/json' },
   });
