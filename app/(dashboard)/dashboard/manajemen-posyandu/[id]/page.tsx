@@ -6,7 +6,11 @@ type PageProps = {
 };
 
 export async function generateStaticParams() {
-  const res = await fetch('http://localhost:3000/api/manajemen-posyandu');
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000';
+  const res = await fetch(`${baseUrl}/api/manajemen-posyandu`);
+
+  if (!res.ok) return [];
+
   const data = await res.json();
 
   return data.map((item: any) => ({
@@ -17,7 +21,9 @@ export async function generateStaticParams() {
 export default async function Page({ params }: PageProps) {
   const { id } = params;
 
-  const res = await fetch('http://localhost:3000/api/manajemen-posyandu', {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000';
+
+  const res = await fetch(`${baseUrl}/api/manajemen-posyandu`, {
     cache: 'no-store',
   });
 
